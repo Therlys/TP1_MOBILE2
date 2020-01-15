@@ -1,3 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TP1</string>
+    <string name="hint_search_word">Quebec, Montreal, ...</string>
+    <string name="retry">RETRY</string>
+    <string name="error_message">Oups... </string>
+    <string name="not_found_error_message">city ​​not found.</string>
+    <string name="connectivity_error_message">no internet connection.</string>
+    <string name="server_error_message">no internet connection.</string>
+    <string name="unauthorized_error_message">no internet connection.</string>
+    <string name="forbidden_error_message">access denied.</string>
 </resources>

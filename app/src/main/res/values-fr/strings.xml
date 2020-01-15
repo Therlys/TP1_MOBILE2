@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TP1</string>
+    <string name="hint_search_word">Quebéc, Montréal, ...</string>
+    <string name="retry">RÉESSAYER</string>
+    <string name="error_message">Oups... </string>
+    <string name="not_found_error_message">ville non trouvée.</string>
+    <string name="connectivity_error_message">aucune connection internet.</string>
+    <string name="server_error_message">le serveur n\'a pas répondu.</string>
+    <string name="unauthorized_error_message">utilisateur non authentifié.</string>
+    <string name="forbidden_error_message">you don’t have permission to access this server.</string>
+</resources>
