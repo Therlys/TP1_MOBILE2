@@ -1,7 +1,6 @@
 package ca.csf.mobile2.tp1.model
 
 import android.os.AsyncTask
-import ca.csf.mobile2.tp1.R
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 
@@ -26,15 +25,9 @@ class FetchWeatherAsyncTask(private val weatherCity: String, val onSuccess : (We
         try {
             response = httpClient.newCall(request).execute()
             return when {
-                response.code() == NOT_FOUND_ERROR_CODE -> Promise.err(
-                    NetworkError.NOT_FOUND
-                )
-                response.code() == FORBIDDEN_ERROR_CODE -> Promise.err(
-                    NetworkError.FORBIDDEN
-                )
-                response.code() == UNAUTHORIZED_ERROR_CODE -> Promise.err(
-                    NetworkError.UNAUTHORIZED
-                )
+                response.code() == NOT_FOUND_ERROR_CODE -> Promise.err(NetworkError.NOT_FOUND)
+                response.code() == FORBIDDEN_ERROR_CODE -> Promise.err(NetworkError.FORBIDDEN)
+                response.code() == UNAUTHORIZED_ERROR_CODE -> Promise.err(NetworkError.UNAUTHORIZED)
                 response.isSuccessful -> {
                     val responseBody = response.body()!!.string()
                     val mapper = jacksonObjectMapper()
