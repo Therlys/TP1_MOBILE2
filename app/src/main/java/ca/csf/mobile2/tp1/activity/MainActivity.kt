@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var errorTextView: TextView
     private lateinit var retryButton: Button
 
-    private var showedDisplayState: DisplayState? = null
-    private var showedWeatherType: WeatherType? = null
+    private var showedDisplayState: DisplayState = DisplayState.HOME
+    private var showedWeatherType: WeatherType = WeatherType.SUNNY
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +47,6 @@ class MainActivity : AppCompatActivity() {
         errorTextView = findViewById(R.id.error_text_view)
         retryButton = findViewById(R.id.retry_button)
         weatherTypeImageView = findViewById(R.id.weather_type_image_view)
-
-        setDisplayState(DisplayState.HOME)
 
         retryButton.setOnClickListener { searchWeather() }
         searchEditText.setOnEditorActionListener { _, actionId, event ->
@@ -66,6 +64,8 @@ class MainActivity : AppCompatActivity() {
                 false
             }
         }
+
+        hideShowedStates()
     }
 
     private fun Context.hideKeyboardFrom(view: View) {
@@ -76,32 +76,21 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString(SHOWED_TEMPERATURE_IN_CELSIUS_TAG, temperatureTextView.text.toString())
         outState.putString(SHOWED_CITY_TAG, cityTextView.text.toString())
-        if(showedWeatherType != null) outState.putString(SHOWED_WEATHER_TYPE_TAG, showedWeatherType.toString())
-        if(showedDisplayState != null) outState.putString(SHOWED_STATE_TAG, showedDisplayState.toString())
+        outState.putSerializable(SHOWED_WEATHER_TYPE_TAG, showedWeatherType)
+        outState.putSerializable(SHOWED_STATE_TAG, showedDisplayState)
         outState.putString(SHOWED_NETWORK_ERROR_TAG, errorTextView.text.toString())
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        temperatureTextView.text = savedInstanceState.getString(
-            SHOWED_TEMPERATURE_IN_CELSIUS_TAG
-        )
+        temperatureTextView.text = savedInstanceState.getString(SHOWED_TEMPERATURE_IN_CELSIUS_TAG)
         cityTextView.text = savedInstanceState.getString(SHOWED_CITY_TAG)
         errorTextView.text = savedInstanceState.getString(SHOWED_NETWORK_ERROR_TAG)
-
-        val weatherTypeString: String? = savedInstanceState.getString(SHOWED_WEATHER_TYPE_TAG)
-        if(weatherTypeString != null) {
-            val weatherType: WeatherType? = WeatherType.valueOf(weatherTypeString)
-            if (weatherType != null) setWeatherType(weatherType)
-        }
-
-        val displayStateString: String? = savedInstanceState.getString(SHOWED_STATE_TAG)
-        if(displayStateString != null){
-            val displayState: DisplayState? = DisplayState.valueOf(displayStateString)
-            if(displayState == DisplayState.LOADING) searchWeather()
-            else if (displayState != null) setDisplayState(displayState)
-        }
+        setWeatherType(savedInstanceState.getSerializable(SHOWED_WEATHER_TYPE_TAG) as WeatherType)
+        val displayState: DisplayState = savedInstanceState.getSerializable(SHOWED_STATE_TAG) as DisplayState
+        if(displayState == DisplayState.LOADING) searchWeather()
+        setDisplayState(displayState)
     }
 
     private fun searchWeather(){
@@ -133,9 +122,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setDisplayState(displayState: DisplayState) {
-        loadingView.visibility = View.GONE
-        weatherGroup.visibility = View.GONE
-        networkErrorGroup.visibility = View.GONE
+        hideShowedStates()
         when (displayState){
             DisplayState.HOME -> return
             DisplayState.LOADING -> loadingView.visibility = View.VISIBLE
@@ -143,6 +130,12 @@ class MainActivity : AppCompatActivity() {
             DisplayState.ERROR -> networkErrorGroup.visibility = Group.VISIBLE
         }
         showedDisplayState = displayState
+    }
+
+    private fun hideShowedStates(){
+        loadingView.visibility = View.GONE
+        weatherGroup.visibility = View.GONE
+        networkErrorGroup.visibility = View.GONE
     }
 
     private fun setWeather(weather: Weather){
@@ -162,12 +155,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setWeatherType(type: WeatherType){
         when (type) {
-            WeatherType.CLOUDY -> weatherTypeImageView.background = getDrawable(
-                R.drawable.ic_cloudy
-            )
-            WeatherType.PARTLY_SUNNY -> weatherTypeImageView.background = getDrawable(
-                R.drawable.ic_partly_sunny
-            )
+            WeatherType.CLOUDY -> weatherTypeImageView.background = getDrawable(R.drawable.ic_cloudy)
+            WeatherType.PARTLY_SUNNY -> weatherTypeImageView.background = getDrawable(R.drawable.ic_partly_sunny)
             WeatherType.RAIN -> weatherTypeImageView.background = getDrawable(R.drawable.ic_rain)
             WeatherType.SNOW -> weatherTypeImageView.background = getDrawable(R.drawable.ic_snow)
             WeatherType.SUNNY -> weatherTypeImageView.background = getDrawable(R.drawable.ic_sunny)
