@@ -1,4 +1,4 @@
-package ca.csf.mobile2.tp1
+package ca.csf.mobile2.tp1.model
 
 class Promise<R, E> private constructor(val result: R?, val error: E?) {
 
