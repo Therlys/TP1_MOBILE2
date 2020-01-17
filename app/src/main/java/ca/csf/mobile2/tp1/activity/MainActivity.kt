@@ -68,11 +68,6 @@ class MainActivity : AppCompatActivity() {
         hideShowedStates()
     }
 
-    private fun Context.hideKeyboardFrom(view: View) {
-        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString(SHOWED_TEMPERATURE_IN_CELSIUS_TAG, temperatureTextView.text.toString())
         outState.putString(SHOWED_CITY_TAG, cityTextView.text.toString())
@@ -91,6 +86,10 @@ class MainActivity : AppCompatActivity() {
         val displayState: DisplayState = savedInstanceState.getSerializable(SHOWED_STATE_TAG) as DisplayState
         if(displayState == DisplayState.LOADING) searchWeather()
         setDisplayState(displayState)
+    }
+
+    private fun Context.hideKeyboardFrom(view: View) {
+        (getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun searchWeather(){
