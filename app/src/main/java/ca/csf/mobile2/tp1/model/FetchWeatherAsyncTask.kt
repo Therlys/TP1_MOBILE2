@@ -56,7 +56,9 @@ class FetchWeatherAsyncTask(private val weatherCity: String, val onSuccess : (We
     }
 }
 
-private const val WEB_SERVICE_URL = "http://10.200.86.157:8080/api/v1/weather/"
+private const val WEB_SERVICE_IP_ADDRESS = "10.200.86.157"
+private const val WEB_SERVICE_PORT = "8080"
+private const val WEB_SERVICE_URL = "http://$WEB_SERVICE_IP_ADDRESS:$WEB_SERVICE_PORT/api/v1/weather/"
 private const val UNHANDLED_ERROR_MESSAGE = "Unhandled error!"
 
 private const val UNAUTHORIZED_ERROR_CODE = 401

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TP1</string>
+    <string name="app_name">Weather</string>
     <string name="hint_search_word">Quebec, Montreal, …</string>
     <string name="retry">RETRY</string>
     <string name="error_message">Oups…</string>
