@@ -53,13 +53,12 @@ class MainActivity : AppCompatActivity() {
             if (event != null && event.keyCode == KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
                 if(searchEditText.text.toString() == "") {
                     true
-                }else{
+                } else {
                     searchWeather()
                     hideKeyboardFrom(searchEditText)
                     false
                 }
-            }
-            else{
+            } else {
                 hideKeyboardFrom(searchEditText)
                 false
             }
